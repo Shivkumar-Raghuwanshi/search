@@ -1,18 +1,19 @@
+
 "use client";
 
-import React from 'react';
-import { CopyBlock, dracula } from 'react-code-blocks';
+import React from "react";
+import { CopyBlock, dracula } from "react-code-blocks";
 
-interface CodeBlockProps {
+interface MyCodeBlockProps {
   code: string;
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
+const MyCodeBlock: React.FC<MyCodeBlockProps> = ({ code }) => {
   return (
     <div className="my-4 p-4 bg-gray-800 text-white rounded-md">
       <CopyBlock
         text={code}
-        language={'jsx'}
+        language={"jsx"}
         showLineNumbers={true}
         theme={dracula}
       />
@@ -20,4 +21,4 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
   );
 };
 
-export default CodeBlock;
+export default MyCodeBlock;
