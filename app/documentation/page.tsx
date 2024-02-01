@@ -1,5 +1,43 @@
-import CodeBlock from "@/components/CodeBlock";
+import MyCodeBlock from "@/components/CodeBlock";
+import Link from "next/link";
 
+const listItems = [
+  {
+    id: 1,
+    name: "Introduction",
+    href: "#introduction",
+  },
+  {
+    id: 2,
+    name: "Tech Stack",
+    href: "#tech-stack",
+  },
+  {
+    id: 3,
+    name: "Features",
+    href: "#features",
+  },
+  {
+    id: 4,
+    name: " Components",
+    href: "#components",
+  },
+  {
+    id: 5,
+    name: "Installation",
+    href: "#installation",
+  },
+  {
+    id: 6,
+    name: "Usage",
+    href: "#usage",
+  },
+  {
+    id: 7,
+    name: "Customization",
+    href: "#customization",
+  },
+];
 const Documentation = () => {
   return (
     <div className="p-6">
@@ -8,46 +46,13 @@ const Documentation = () => {
       </h1>
       <h2 className="text-2xl font-semibold mt-6 mb-2">Table of Contents</h2>
       <ul className="list-disc ml-5">
-        <li>
-          <a href="#introduction" className="text-blue-500 hover:underline">
-            Introduction
-          </a>
-        </li>
-        <li>
-          <a href="#tech-stack" className="text-blue-500 hover:underline">
-            Tech Stack
-          </a>
-        </li>
-        <li>
-          <a href="#features" className="text-blue-500 hover:underline">
-            Features
-          </a>
-        </li>
-        <li>
-          <a href="#components" className="text-blue-500 hover:underline">
-            Components
-          </a>
-        </li>
-        <li>
-          <a href="#installation" className="text-blue-500 hover:underline">
-            Installation
-          </a>
-        </li>
-        <li>
-          <a href="#usage" className="text-blue-500 hover:underline">
-            Usage
-          </a>
-        </li>
-        <li>
-          <a href="#customization" className="text-blue-500 hover:underline">
-            Customization
-          </a>
-        </li>
-        <li>
-          <a href="#contributing" className="text-blue-500 hover:underline">
-            Contributing
-          </a>
-        </li>
+        {listItems.map((item) => (
+          <li key={item.id}>
+            <Link href={item.href} className="text-blue-500 hover:underline">
+              {item.name}
+            </Link>
+          </li>
+        ))}
       </ul>
       <h2 id="introduction" className="text-2xl font-semibold mt-6 mb-2">
         Introduction
@@ -58,7 +63,7 @@ const Documentation = () => {
         It's built using Next.js 14, TypeScript, Tailwind CSS, and Shadcn UI.
       </p>
       <h2 id="tech-stack" className="text-2xl font-semibold mt-6 mb-2">
-        Tech Stack
+        Tech Stackwr
       </h2>
       <p>This project uses the following technologies:</p>
       <ul className="list-disc ml-5">
@@ -138,17 +143,17 @@ const Documentation = () => {
       <ol className="list-decimal ml-5">
         <li>
           Clone the repository:
-          <CodeBlock
+          <MyCodeBlock
             code={`git clone https://github.com/Shivkumar-Raghuwanshi/search`}
           />
         </li>
         <li>
           Navigate to the project directory:
-          <CodeBlock code={`cd Project-Name`} />
+          <MyCodeBlock code={`cd Project-Name`} />
         </li>
         <li>
           Install the dependencies:
-          <CodeBlock code={`npm install`} />
+          <MyCodeBlock code={`npm install`} />
         </li>
       </ol>
       <h2 id="usage" className="text-2xl font-semibold mt-6 mb-2">
@@ -156,196 +161,9 @@ const Documentation = () => {
       </h2>
       <p>
         To use the Autocomplete Search UI component, create and import it in
-        your component and render it as follows:
+        your component and render it .
       </p>
-      <h3 id="usage" className="text-xl font-semibold mt-6 mb-2">
-        Search Component
-      </h3>
-      <CodeBlock
-        code={`
-    "use client";
 
-    // Import necessary libraries and components
-    import {
-      ChangeEvent,
-      FormEvent,
-      useState,
-      useEffect,
-      useCallback,
-    } from "react";
-    import { debounce } from "lodash"; // For debouncing the search input
-    import dictionaryData from "./dictionary.json"; // The dictionary data
-    import { SearchIcon } from "lucide-react"; // The search icon component
-    import { Input } from "./ui/input"; // The input component
-    import { Command } from "@/components/ui/command"; // The command component
-    import { Button } from "./ui/button"; // The button component
-
-    // Define the structure of the dictionary
-    interface Dictionary {
-      [key: string]: string;
-    }
-
-    // Initialize the dictionary with the imported data
-    const dictionary: Dictionary = dictionaryData;
-
-    // Define the Search component
-    export default function Search() {
-      // Initialize state variables
-      const [query, setQuery] = useState<string>(""); // The search query
-      const [suggestions, setSuggestions] = useState<string[]>([]); // The search suggestions
-      const [message, setMessage] = useState<JSX.Element | null>(null); // The message to display
-      const [currentPage, setCurrentPage] = useState(1); // The current page of results
-      const [matchingWords, setMatchingWords] = useState<string[]>([]); // The words that match the query
-      const itemsPerPage = 10; // The number of items to display per page
-
-      // Define the function to handle changes to the search input
-      const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setQuery(event.target.value); // Update the query state
-      };
-
-      // Define the function to get search suggestions
-      const getSuggestions = useCallback(
-        debounce((query: string) => {
-          if (query) {
-            // If there is a query, filter the dictionary for matching words
-            const filteredSuggestions = Object.keys(dictionary)
-              .filter((word) => word.toLowerCase().startsWith(query.toLowerCase()))
-              .slice(0, 10); // Limit the number of suggestions to 10
-            setSuggestions(filteredSuggestions); // Update the suggestions state
-          } else {
-            setSuggestions([]); // If there is no query, clear the suggestions
-          }
-        }, 300),
-        []
-      ); // Debounce the function to limit the number of calls
-
-      // Use an effect hook to update the suggestions whenever the query changes
-      useEffect(() => {
-        getSuggestions(query);
-      }, [query, getSuggestions]); // Add getSuggestions in the dependency array
-
-      // Define the function to handle clicks on the suggestions
-      const handleSuggestionClick = (word: string) => {
-        setQuery(word); // Set the query to the clicked word
-        setSuggestions([]); // Clear the suggestions
-        if (dictionary.hasOwnProperty(word)) {
-          // If the word is in the dictionary, display its definition
-          setMessage(
-            <p className="bg-slate-50 p-2 my-4 rounded-md border">
-              <strong>{word}</strong>: {dictionary[word]}
-            </p>
-          );
-        }
-      };
-
-      // Define the function to handle clicks on the previous button
-      const handlePreviousClick = useCallback(() => {
-        if (currentPage > 1) {
-          setCurrentPage(currentPage - 1); // Decrement the current page
-        }
-      }, [currentPage]); // Add currentPage in the dependency array
-
-      // Define the function to handle clicks on the next button
-      const handleNextClick = useCallback(() => {
-        const totalPages = Math.ceil(matchingWords.length / itemsPerPage);
-        if (currentPage < totalPages) {
-          setCurrentPage(currentPage + 1); // Increment the current page
-        }
-      }, [matchingWords, itemsPerPage, currentPage]); // Add necessary dependencies
-
-      // Define the function to handle form submission
-    const handleSubmit = (event: FormEvent&lt;HTMLFormElement&gt;) => {
-      event.preventDefault(); // Prevent the default form submission behavior
-      const words = Object.keys(dictionary).filter((word) =>
-        word.toLowerCase().startsWith(query.toLowerCase())
-      );
-      setMatchingWords(words); // Update the matching words state
-      setSuggestions([]); // Clear the suggestions
-    };
-
-    // Use an effect hook to update the message whenever the matching words or current page changes
-    useEffect(() => {
-      setMessage(
-        <div>
-          {matchingWords
-            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-            .map((word) => (
-              <div key={word}>
-                <div className=&quot;bg-slate-50 p-2 my-4 rounded-md border&quot;>
-                  <strong className=&quot;text-lg&quot;>{word}</strong>: {dictionary[word]}
-                </div>
-              </div>
-            ))}
-          {matchingWords.length >= 1 && (
-            <div className=&quot;flex gap-2&quot;>
-              <Button onClick={handlePreviousClick}>Previous</Button>
-              <Button onClick={handleNextClick}>Next</Button>
-            </div>
-          )}
-        </div>
-      );
-    }, [matchingWords, currentPage, handleNextClick, handlePreviousClick]); // Add the functions in the dependency array
-
-    return (
-      <div className="relative w-full">
-        <form onSubmit={handleSubmit} className="fixed  w-full z-10 ">
-          <div className="bg-gray-50 w-full h-20 p-2 drop-shadow-lg">
-            <div className="flex justify-center items-center gap-2 bg-white p-2 rounded-md mx-auto md:w-1/2">
-              <SearchIcon />
-              <Input
-                type="search"
-                value={query}
-                onChange={handleChange}
-                placeholder="Search ..."
-                required
-              />
-            </div>
-          </div>
-          <div>
-            <Command className="rounded-lg border-none shadow-md w-full md:w-1/2 mx-auto ">
-              <div>
-                {suggestions.map((suggestion) => (
-                  <div
-                    key={suggestion}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="flex justify-start items-center px-2 py-0.5 cursor-pointer hover:bg-slate-100 rounded-md"
-                  >
-                    <SearchIcon className="mr-2 h-4 w-4" />
-                    <span>{suggestion}</span>
-                  </div>
-                ))}
-              </div>
-            </Command>
-          </div>
-        </form>
-        <div className="px-4 py-20">
-          <div>{message}</div>
-        </div>
-      </div>
-    );
-  }
-  
-  `}
-      />
-
-      <h3 id="usage" className="text-xl font-semibold mt-6 mb-2">
-        HomePage
-      </h3>
-      <CodeBlock
-        code={`
-    import Search from './Search';
-
-    function Home() {
-      return (
-        <div className="App">
-          <Search />
-        </div>
-      );
-    }
-
-    export default Home;
-    `}
-      />
       <h2 id="customization" className="text-2xl font-semibold mt-6 mb-2">
         Customization
       </h2>
