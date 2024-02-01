@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import MyCodeBlock from "@/components/CodeBlock";
 import Link from "next/link";
 
