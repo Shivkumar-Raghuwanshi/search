@@ -1,7 +1,13 @@
 "use client";
 
 // Import necessary libraries and components
-import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { debounce } from "lodash"; // For debouncing the search input
 import dictionaryData from "./dictionary.json"; // The dictionary data
 import { SearchIcon } from "lucide-react"; // The search icon component
@@ -33,22 +39,25 @@ export default function Search() {
   };
 
   // Define the function to get search suggestions
-  const getSuggestions = debounce((query: string) => {
-    if (query) {
-      // If there is a query, filter the dictionary for matching words
-      const filteredSuggestions = Object.keys(dictionary)
-        .filter((word) => word.toLowerCase().startsWith(query.toLowerCase()))
-        .slice(0, 10); // Limit the number of suggestions to 10
-      setSuggestions(filteredSuggestions); // Update the suggestions state
-    } else {
-      setSuggestions([]); // If there is no query, clear the suggestions
-    }
-  }, 300); // Debounce the function to limit the number of calls
+  const getSuggestions = useCallback(
+    debounce((query: string) => {
+      if (query) {
+        // If there is a query, filter the dictionary for matching words
+        const filteredSuggestions = Object.keys(dictionary)
+          .filter((word) => word.toLowerCase().startsWith(query.toLowerCase()))
+          .slice(0, 10); // Limit the number of suggestions to 10
+        setSuggestions(filteredSuggestions); // Update the suggestions state
+      } else {
+        setSuggestions([]); // If there is no query, clear the suggestions
+      }
+    }, 300),
+    []
+  ); // Debounce the function to limit the number of calls
 
   // Use an effect hook to update the suggestions whenever the query changes
   useEffect(() => {
     getSuggestions(query);
-  }, [query]);
+  }, [query, getSuggestions]); // Add getSuggestions in the dependency array
 
   // Define the function to handle clicks on the suggestions
   const handleSuggestionClick = (word: string) => {
@@ -65,19 +74,19 @@ export default function Search() {
   };
 
   // Define the function to handle clicks on the previous button
-  const handlePreviousClick = () => {
+  const handlePreviousClick = useCallback(() => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1); // Decrement the current page
     }
-  };
+  }, [currentPage]); // Add currentPage in the dependency array
 
   // Define the function to handle clicks on the next button
-  const handleNextClick = () => {
+  const handleNextClick = useCallback(() => {
     const totalPages = Math.ceil(matchingWords.length / itemsPerPage);
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1); // Increment the current page
     }
-  };
+  }, [matchingWords, itemsPerPage, currentPage]); // Add necessary dependencies
 
   // Define the function to handle form submission
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -110,7 +119,7 @@ export default function Search() {
         )}
       </div>
     );
-  }, [matchingWords, currentPage]);
+  }, [matchingWords, currentPage, handleNextClick, handlePreviousClick]); // Add the functions in the dependency array
 
   return (
     <div className="relative w-full">
