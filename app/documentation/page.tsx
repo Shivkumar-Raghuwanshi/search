@@ -65,7 +65,7 @@ const Documentation = () => {
         It's built using Next.js 14, TypeScript, Tailwind CSS, and Shadcn UI.
       </p>
       <h2 id="tech-stack" className="text-2xl font-semibold mt-6 mb-2">
-        Tech Stackwr
+        Tech Stack
       </h2>
       <p>This project uses the following technologies:</p>
       <ul className="list-disc ml-5">
