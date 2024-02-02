@@ -14,6 +14,8 @@ import { SearchIcon } from "lucide-react"; // The search icon component
 import { Input } from "./ui/input"; // The input component
 import { Command } from "@/components/ui/command"; // The command component
 import { Button } from "./ui/button"; // The button component
+import Link from "next/link";
+import { FaGithub } from "react-icons/fa6";
 
 // Define the structure of the dictionary
 interface Dictionary {
@@ -125,15 +127,27 @@ export default function Search() {
     <div className="relative w-full">
       <form onSubmit={handleSubmit} className="fixed  w-full z-10 ">
         <div className="bg-gray-50 w-full h-20 p-2 drop-shadow-lg">
-          <div className="flex justify-center items-center gap-2 bg-white p-2 rounded-md mx-auto md:w-1/2">
-            <SearchIcon />
-            <Input
-              type="search"
-              value={query}
-              onChange={handleChange}
-              placeholder="Search ..."
-              required
-            />
+          <div className="flex justify-between  items-center">
+            <Link href="/documentation" className="sm:hidden ">
+              <Button>Documentation</Button>
+            </Link>
+
+            <div className="flex justify-center items-center gap-2 bg-white p-2 rounded-md mx-auto md:w-1/2">
+              <SearchIcon />
+              <Input
+                type="search"
+                value={query}
+                onChange={handleChange}
+                placeholder="Search ..."
+                required
+              />
+            </div>
+            <Link
+              href={"https://github.com/Shivkumar-Raghuwanshi/search"}
+              target="_blank"
+            >
+              <FaGithub className="w-8 h-10 sm:hidden" />
+            </Link>
           </div>
         </div>
         <div>
