@@ -127,7 +127,7 @@ export default function Search() {
     <div className="relative w-full">
       <form onSubmit={handleSubmit} className="fixed  w-full z-10 ">
         <div>
-        <div className="flex justify-center items-center gap-2 bg-white p-2 rounded-md mx-auto w-1/2">
+        <div className="flex justify-center items-center gap-2 bg-white p-2 rounded-md mx-auto md:w-1/2">
               <SearchIcon />
               <Input
                 type="search"
