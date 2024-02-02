@@ -6,8 +6,8 @@ import { FaGithub } from "react-icons/fa6";
 
 export default function Home() {
   return (
-    <div className=" bg-gray-100 w-full h-20 md:h-28 drop-shadow-lg mx-auto">
-      <div className="flex justify-between w-full items-center gap-2 px-3">
+    <div className="relative w-full">
+      <div className="fixed z-20 md:flex justify-between w-full bg-slate-100 items-center gap-2 px-3 hidden ">
         <Link href="/documentation" className="hidden md:block">
           <Button>Documentation</Button>
         </Link>
@@ -19,8 +19,9 @@ export default function Home() {
           <FaGithub className="w-8 h-10" />
         </Link>
       </div>
-
-      <Search />
+      <div className="absolute md:py-10">
+        <Search />
+      </div>
     </div>
   );
 }

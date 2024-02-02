@@ -126,7 +126,7 @@ export default function Search() {
   return (
     <div className="relative w-full">
       <form onSubmit={handleSubmit} className="fixed  w-full z-10 ">
-        <div>
+        <div className="bg-gray-100 w-full h-20  drop-shadow-lg p-2">
         <div className="flex justify-center items-center gap-2 bg-white p-2 rounded-md mx-auto md:w-1/2">
               <SearchIcon />
               <Input
